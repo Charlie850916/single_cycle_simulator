@@ -1,0 +1,51 @@
+# depslib dependency file v1.0
+1489222945 source:c:\users\user\desktop\single cycle\main.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
+1488801088 source:c:\users\user\desktop\single cycle\little2big.c
+	<stdio.h>
+	"function.h"
+
+1489222190 c:\users\user\desktop\single cycle\function.h
+	<stdio.h>
+	<stdlib.h>
+
+1488782109 source:c:\users\user\desktop\single cycle\getinsruction.c
+	<stdio.h>
+	"function.h"
+
+1488890700 source:c:\users\user\desktop\single cycle\getinstruction.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
+1488803616 source:c:\users\user\desktop\single cycle\getopcode.c
+	<stdio.h>
+
+1489222150 source:c:\users\user\desktop\single cycle\getcode.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
+1489214260 source:c:\users\user\desktop\single cycle\errormsg.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
+1489218462 source:c:\users\user\desktop\single cycle\setting.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
+1489221085 source:c:\users\user\desktop\single cycle\r_type.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
+1489222182 source:c:\users\user\desktop\single cycle\i_type.c
+	<stdio.h>
+	<stdlib.h>
+	"function.h"
+
