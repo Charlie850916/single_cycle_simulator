@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int s[32], d_mem[1024];
+int s[32], d_mem[2048];
 
-unsigned int PC, LO, HI, i_num, d_num;
+unsigned int PC, LO, HI, i_num, d_num, initial_d;
 
 FILE *fp_i, *fp_d;
 
-int overwriteHL, halt;
+int overwriteH, overwriteL, halt, max_sp, min_sp;
 
 void Initial();
 
@@ -43,7 +43,7 @@ void OverFlow_add(int s, int t, int d, int p);
 
 void OverFlow_sub(int s, int t, int d, int p);
 
-void OverFlow_mult(int a, int b, int HI);
+void OverFlow_mult(int a, int b, long long int c);
 
 int Misalignment(int i);
 

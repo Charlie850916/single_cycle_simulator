@@ -11,41 +11,46 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         printf("addi\n");
         s[rt] = s[rs] + im;
         OverFlow_add(s[rs],im,s[rt],rt);
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x09: // addiu
         printf("addiu\n");
         s[rt] = s[rs] + im;
-        printf("s%d 0x%08x\n", rt, s[rt]);
+        if(rt==0) printf("$0 overwrite!\n");
+        printf("s%d = 0x%08x\n", rt, s[rt]);
         break;
     case 0x23: // lw
         printf("lw\n");
-        if(Misalignment((s[29]+s[rs]+im)%4)) break;
-        if(AddressOverflow(s[29]+s[rs]+im,0)) break;
-        s[rt] = d_mem[(s[29]+s[rs]+im)>>2];
-        printf("s%d 0x%08x\n", rt, s[rt]);
+        if(Misalignment((s[rs]+im)%4)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,0)) break;
+        s[rt] = d_mem[(initial_d+s[rs]+im)/4];
+        if(rt==0) printf("$0 overwrite!\n");
+        printf("s%d = 0x%08x\n", rt, s[rt]);
         break;
     case 0x21: // lh
         printf("lh\n");
-        if(Misalignment((s[29]+s[rs]+im)%2)) break;
-        if(AddressOverflow(s[29]+s[rs]+im,2)) break;
-        buff = d_mem[(s[29]+s[rs]+im)>>2];
-        s[rt] = ((s[29]+s[rs]+im)%4==0) ? buff >> 16 : ( (buff&0x0000ffff) << 16) >> 16;
+        if(Misalignment((s[rs]+im)%2)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,2)) break;
+        buff = d_mem[(initial_d+s[rs]+im)/4];
+        s[rt] = ((initial_d+s[rs]+im)%4==0) ? buff >> 16 : ( (buff&0x0000ffff) << 16) >> 16;
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x25: // lhu
         printf("lhu\n");
-        if(Misalignment((s[29]+s[rs]+im)%2)) break;
-        if(AddressOverflow(s[29]+s[rs]+im,2)) break;
-        buff = d_mem[(s[29]+s[rs]+im)>>2];
-        s[rt] = ((s[29]+s[rs]+im)%4==0) ? (buff >> 16) & 0x0000ffff : (buff&0x0000ffff) ;
+        if(Misalignment((s[rs]+im)%2)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,2)) break;
+        buff = d_mem[(initial_d+s[rs]+im)/4];
+        s[rt] = ((initial_d+s[rs]+im)%4==0) ? (buff >> 16) & 0x0000ffff : (buff&0x0000ffff) ;
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d = 0x%08x\n", rt, s[rt]);
         break;
     case 0x20: // lb
         printf("lb\n");
-        if(AddressOverflow(s[29]+s[rs]+im,3)) break;
-        byte = (s[29]+s[rs]+im)%4;
-        buff = d_mem[(s[29]+s[rs]+im)>>2];
+        if(AddressOverflow(initial_d+s[rs]+im,3)) break;
+        byte = (initial_d+s[rs]+im)%4;
+        buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
         {
         case 0:
@@ -61,13 +66,14 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
             s[rt] = ((buff & 0x000000ff) << 24) >> 24;
             break;
         }
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x24: // lbu
         printf("lbu\n");
-        if(AddressOverflow(s[29]+s[rs]+im,3)) break;
-        byte = (s[29]+s[rs]+im)%4;
-        buff = d_mem[(s[29]+s[rs]+im)>>2];
+        if(AddressOverflow(initial_d+s[rs]+im,3)) break;
+        byte = (initial_d+s[rs]+im)%4;
+        buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
         {
         case 0:
@@ -83,79 +89,85 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
             s[rt] = buff & 0x000000ff;
             break;
         }
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x2b: // sw
         printf("sw\n");
-        if(Misalignment((s[29]+s[rs]+im)%4)) break;
-        if(AddressOverflow(s[29]+s[rs]+im,0)) break;
-        d_mem[(s[29]+s[rs]+im)>>2] = s[rt];
+        if(Misalignment((s[rs]+im)%4)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,0)) break;
+        d_mem[(initial_d+s[rs]+im)/4] = s[rt];
         break;
     case 0x29: // sh
         printf("sh\n");
-        if(Misalignment((s[29]+s[rs]+im)%2)) break;
-        if(AddressOverflow(s[29]+s[rs]+im,2)) break;
-        buff = d_mem[(s[29]+s[rs]+im)>>2];
-        if((s[29]+s[rs]+im)%4==0)
+        if(Misalignment((s[rs]+im)%2)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,2)) break;
+        buff = d_mem[(initial_d+s[rs]+im)/4];
+        if((initial_d+s[rs]+im)%4==0)
         {
             buff = buff & 0x0000ffff;
-            d_mem[(s[29]+s[rs]+im)>>2] = buff | ((s[rt]&0x0000ffff)<<16);
+            d_mem[(initial_d+s[rs]+im)/4] = buff | ((s[rt]&0x0000ffff)<<16);
         }
         else
         {
             buff = buff & 0xffff0000;
-            d_mem[(s[29]+s[rs]+im)>>2] = buff | ((s[rt]&0x0000ffff));
+            d_mem[(initial_d+s[rs]+im)/4] = buff | ((s[rt]&0x0000ffff));
         }
         break;
     case 0x28: // sb
         printf("sb\n");
-        if(AddressOverflow(s[29]+s[rs]+im,3)) break;
-        byte = (s[29]+s[rs]+im)%4;
-        buff = d_mem[(s[29]+s[rs]+im)>>2];
+        if(AddressOverflow(initial_d+s[rs]+im,3)) break;
+        byte = (initial_d+s[rs]+im)%4;
+        buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
         {
         case 0:
             buff = buff & 0x00ffffff;
-            d_mem[(s[29]+s[rs]+im)>>2] = buff | ((s[rt]&0x000000ff)<<24);
+            d_mem[(initial_d+s[rs]+im)/4] = buff | ((s[rt]&0x000000ff)<<24);
             break;
         case 1:
             buff = buff & 0xff00ffff;
-            d_mem[(s[29]+s[rs]+im)>>2] = buff | ((s[rt]&0x000000ff)<<16);
+            d_mem[(initial_d+s[rs]+im)/4] = buff | ((s[rt]&0x000000ff)<<16);
             break;
         case 2:
             buff = buff & 0xffff00ff;
-            d_mem[(s[29]+s[rs]+im)>>2] = buff | ((s[rt]&0x000000ff)<<8);
+            d_mem[(initial_d+s[rs]+im)/4] = buff | ((s[rt]&0x000000ff)<<8);
             break;
         case 3:
             buff = buff & 0xff00ffff;
-            d_mem[(s[29]+s[rs]+im)>>2] = buff | (s[rt]&0x000000ff);
+            d_mem[(initial_d+s[rs]+im)/4] = buff | (s[rt]&0x000000ff);
             break;
         }
         break;
     case 0x0f: // lui
         printf("lui\n");
         s[rt] = im << 16;
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0c: // andi
         printf("andi\n");
         s[rt] = s[rs] & im;
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0d: // ori
         printf("ori\n");
         s[rt] = s[rs] | im;
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0e: // nori
         printf("nori\n");
         s[rt] = ~(s[rs] | im);
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0a: // slti
         printf("slti\n");
         printf("s[rs] = %d , im = %d\n",s[rs],im);
         s[rt] = s[rs] < im ;
+        if(rt==0) printf("$0 overwrite!\n");
         printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x04: // beq
@@ -175,5 +187,6 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         halt = 1;
         break;
     }
+    s[0] = 0;
     return;
 }

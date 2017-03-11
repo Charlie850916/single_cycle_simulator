@@ -2,16 +2,6 @@
 #include <stdlib.h>
 #include "function.h"
 
-void WriteZero()
-{
-    if(s[0]!=0)
-    {
-        printf("$0 overwrite!\n");
-        s[0] = 0;
-    }
-    return;
-}
-
 void OverFlow_add(int s, int t, int d, int p)
 {
     if( (s>0 && t>0 && d<=0) || (s<0 && t<0 && d>=0) ) printf("s%d number overflow!\n",p);
@@ -24,10 +14,10 @@ void OverFlow_sub(int s, int t, int d, int p)
     return;
 }
 
-void OverFlow_mult(int a, int b, int HI)
+void OverFlow_mult(int a, int b, long long int c)
 {
-    if( ( (a>0 && b>0) || (a<0 && b<0) ) && HI <= 0) printf("HI-LO number overflow!\n");
-    if( ( (a>0 && b<0) || (a<0 && b>0) ) && HI >= 0) printf("HI-LO number overflow!\n");
+    if( ( (a>0 && b>0) || (a<0 && b<0) ) && c <= 0) printf("HI-LO number overflow!\n");
+    if( ( (a>0 && b<0) || (a<0 && b>0) ) && c >= 0) printf("HI-LO number overflow!\n");
     return;
 }
 
