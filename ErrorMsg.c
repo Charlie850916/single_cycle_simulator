@@ -49,6 +49,7 @@ int AddressOverflow(int sp, int b)
     if(max_sp-min_sp >= 1024*4)
     {
         fprintf(fp_err, "In cycle %d: Address Overflow\n", cycle);
+        return 1;
     }
     return 0;
 }

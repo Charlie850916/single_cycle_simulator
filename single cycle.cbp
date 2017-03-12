@@ -34,9 +34,6 @@
 		<Unit filename="ErrorMsg.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="GetCode.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="GetInstruction.c">
 			<Option compilerVar="CC" />
 		</Unit>

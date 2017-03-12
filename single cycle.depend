@@ -8,7 +8,7 @@
 	<stdio.h>
 	"function.h"
 
-1489294286 c:\users\user\desktop\single cycle\function.h
+1489322264 c:\users\user\desktop\single cycle\function.h
 	<stdio.h>
 	<stdlib.h>
 
@@ -16,7 +16,7 @@
 	<stdio.h>
 	"function.h"
 
-1488890700 source:c:\users\user\desktop\single cycle\getinstruction.c
+1489322815 source:c:\users\user\desktop\single cycle\getinstruction.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
@@ -29,12 +29,12 @@
 	<stdlib.h>
 	"function.h"
 
-1489293731 source:c:\users\user\desktop\single cycle\errormsg.c
+1489322757 source:c:\users\user\desktop\single cycle\errormsg.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
 
-1489294896 source:c:\users\user\desktop\single cycle\setting.c
+1489322264 source:c:\users\user\desktop\single cycle\setting.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
@@ -44,7 +44,7 @@
 	<stdlib.h>
 	"function.h"
 
-1489294349 source:c:\users\user\desktop\single cycle\i_type.c
+1489322264 source:c:\users\user\desktop\single cycle\i_type.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
