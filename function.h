@@ -9,6 +9,8 @@ unsigned int PC, LO, HI, i_num, d_num, initial_d;
 
 unsigned int LO_p, HI_p;
 
+int bias;
+
 FILE *fp_i, *fp_d, *fp_r, *fp_err;
 
 int cycle, overwriteHL, halt, max_sp, min_sp;

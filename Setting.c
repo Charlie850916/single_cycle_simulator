@@ -32,7 +32,9 @@ void Initial()
     s[29] = initial_d;
     s_p[29] = initial_d;
 
-    for(i=0 ; i<d_num ; i++) d_mem[(s[29]/4)+i] = GetLineN((i*4)+8, fp_d);
+    bias = 1023 - initial_d/4;
+
+    for(i=0 ; i<d_num ; i++) d_mem[1023+i] = GetLineN((i*4)+8, fp_d);
 
     overwriteHL = 0;
     max_sp = initial_d;
