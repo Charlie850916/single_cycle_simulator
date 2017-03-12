@@ -64,6 +64,7 @@ void InitialImf()
     fprintf(fp_r,"$HI: 0x%08X\n", HI);
     fprintf(fp_r,"$LO: 0x%08X\n", LO);
     fprintf(fp_r,"PC: 0x%08X\n", PC);
+    fprintf(fp_r,"\n\n");
     return;
 }
 
@@ -87,5 +88,6 @@ void PrintImf()
         LO_p = LO;
     }
     fprintf(fp_r,"PC: 0x%08X\n",PC);
+    fprintf(fp_r,"\n\n");
     return;
 }

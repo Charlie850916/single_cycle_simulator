@@ -17,28 +17,28 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         s[rt] = s[rs] + im;
         break;
     case 0x23: // lw
-        if(Misalignment( (s[rs]+im) %4 ) ) break;
-        if(AddressOverflow(initial_d+s[rs]+im,4)) break;
-        if(s0_Overwrite(rt)) break;
+        s0_Overwrite(rt);
+        AddressOverflow(initial_d+s[rs]+im,4);
+        if(Misalignment( (s[rs]+im) %4 )) break;
         s[rt] = d_mem[(initial_d+s[rs]+im)/4];
         break;
     case 0x21: // lh
-        if(Misalignment( (s[rs]+im) % 2) ) break;
-        if(AddressOverflow(initial_d+s[rs]+im,2)) break;
-        if(s0_Overwrite(rt)) break;
+        s0_Overwrite(rt);
+        AddressOverflow(initial_d+s[rs]+im,2);
+        if(Misalignment( (s[rs]+im) % 2)) break;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         s[rt] = ((initial_d+s[rs]+im)%4==0) ? buff >> 16 : ( (buff&0x0000ffff) << 16) >> 16;
         break;
     case 0x25: // lhu
+        s0_Overwrite(rt);
+        AddressOverflow(initial_d+s[rs]+im,2);
         if(Misalignment((s[rs]+im)%2)) break;
-        if(AddressOverflow(initial_d+s[rs]+im,2)) break;
-        if(s0_Overwrite(rt)) break;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         s[rt] = ((initial_d+s[rs]+im)%4==0) ? (buff >> 16) & 0x0000ffff : (buff&0x0000ffff) ;
         break;
     case 0x20: // lb
+        s0_Overwrite(rt);
         if(AddressOverflow(initial_d+s[rs]+im,1)) break;
-        if(s0_Overwrite(rt)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -58,8 +58,8 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         }
         break;
     case 0x24: // lbu
+        s0_Overwrite(rt);
         if(AddressOverflow(initial_d+s[rs]+im,1)) break;
-        if(s0_Overwrite(rt)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -79,13 +79,13 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         }
         break;
     case 0x2b: // sw
+        AddressOverflow(initial_d+s[rs]+im,4);
         if(Misalignment((s[rs]+im)%4)) break;
-        if(AddressOverflow(initial_d+s[rs]+im,4)) break;
         d_mem[(initial_d+s[rs]+im)/4] = s[rt];
         break;
     case 0x29: // sh
+        AddressOverflow(initial_d+s[rs]+im,2);
         if(Misalignment((s[rs]+im)%2)) break;
-        if(AddressOverflow(initial_d+s[rs]+im,2)) break;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         if((initial_d+s[rs]+im)%4==0)
         {
@@ -152,8 +152,10 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         if(s[rs]>0) PC = PC + 4*im;
         break;
     default:
+        fprintf(fp_r,"illegal instruction found at 0x0%8X\n",PC);
         halt = 1;
         break;
     }
+    s[0] = 0;
     return;
 }

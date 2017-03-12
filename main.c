@@ -18,7 +18,6 @@ int main()
     while(!halt)
     {
         IS = GetLineN(PC-inital_PC+8,fp_i);
-        fprintf(fp_r,"\n\n");
         fprintf(fp_r,"cycle %d\n",cycle);
         opcode = GetOpcode(IS);
         switch(opcode)
@@ -52,7 +51,6 @@ int main()
             PC = PC + 4;
             break;
         }
-
         cycle++;
         PrintImf();
         if(GetOpcode(GetLineN(PC-inital_PC+8,fp_i))==0x3f) halt = 1;
