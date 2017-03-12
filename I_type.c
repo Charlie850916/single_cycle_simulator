@@ -8,47 +8,37 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     switch(op)
     {
     case 0x08: // addi
-        printf("addi\n");
+        if(s0_Overwrite(rt)) break;
         s[rt] = s[rs] + im;
         OverFlow_add(s[rs],im,s[rt],rt);
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x09: // addiu
-        printf("addiu\n");
+        if(s0_Overwrite(rt)) break;
         s[rt] = s[rs] + im;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d = 0x%08x\n", rt, s[rt]);
         break;
     case 0x23: // lw
-        printf("lw\n");
-        if(Misalignment((s[rs]+im)%4)) break;
-        if(AddressOverflow(initial_d+s[rs]+im,0)) break;
+        if(Misalignment( (s[rs]+im) %4 ) ) break;
+        if(AddressOverflow(initial_d+s[rs]+im,4)) break;
+        if(s0_Overwrite(rt)) break;
         s[rt] = d_mem[(initial_d+s[rs]+im)/4];
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d = 0x%08x\n", rt, s[rt]);
         break;
     case 0x21: // lh
-        printf("lh\n");
-        if(Misalignment((s[rs]+im)%2)) break;
+        if(Misalignment( (s[rs]+im) % 2) ) break;
         if(AddressOverflow(initial_d+s[rs]+im,2)) break;
+        if(s0_Overwrite(rt)) break;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         s[rt] = ((initial_d+s[rs]+im)%4==0) ? buff >> 16 : ( (buff&0x0000ffff) << 16) >> 16;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x25: // lhu
-        printf("lhu\n");
         if(Misalignment((s[rs]+im)%2)) break;
         if(AddressOverflow(initial_d+s[rs]+im,2)) break;
+        if(s0_Overwrite(rt)) break;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         s[rt] = ((initial_d+s[rs]+im)%4==0) ? (buff >> 16) & 0x0000ffff : (buff&0x0000ffff) ;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d = 0x%08x\n", rt, s[rt]);
         break;
     case 0x20: // lb
-        printf("lb\n");
-        if(AddressOverflow(initial_d+s[rs]+im,3)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,1)) break;
+        if(s0_Overwrite(rt)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -66,12 +56,10 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
             s[rt] = ((buff & 0x000000ff) << 24) >> 24;
             break;
         }
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x24: // lbu
-        printf("lbu\n");
-        if(AddressOverflow(initial_d+s[rs]+im,3)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,1)) break;
+        if(s0_Overwrite(rt)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -89,17 +77,13 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
             s[rt] = buff & 0x000000ff;
             break;
         }
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x2b: // sw
-        printf("sw\n");
         if(Misalignment((s[rs]+im)%4)) break;
-        if(AddressOverflow(initial_d+s[rs]+im,0)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,4)) break;
         d_mem[(initial_d+s[rs]+im)/4] = s[rt];
         break;
     case 0x29: // sh
-        printf("sh\n");
         if(Misalignment((s[rs]+im)%2)) break;
         if(AddressOverflow(initial_d+s[rs]+im,2)) break;
         buff = d_mem[(initial_d+s[rs]+im)/4];
@@ -115,8 +99,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         }
         break;
     case 0x28: // sb
-        printf("sb\n");
-        if(AddressOverflow(initial_d+s[rs]+im,3)) break;
+        if(AddressOverflow(initial_d+s[rs]+im,1)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -140,53 +123,37 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         }
         break;
     case 0x0f: // lui
-        printf("lui\n");
+        if(s0_Overwrite(rt)) break;
         s[rt] = im << 16;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0c: // andi
-        printf("andi\n");
+        if(s0_Overwrite(rt)) break;
         s[rt] = s[rs] & im;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0d: // ori
-        printf("ori\n");
+        if(s0_Overwrite(rt)) break;
         s[rt] = s[rs] | im;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0e: // nori
-        printf("nori\n");
+        if(s0_Overwrite(rt)) break;
         s[rt] = ~(s[rs] | im);
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x0a: // slti
-        printf("slti\n");
-        printf("s[rs] = %d , im = %d\n",s[rs],im);
+        if(s0_Overwrite(rt)) break;
         s[rt] = s[rs] < im ;
-        if(rt==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rt, s[rt]);
         break;
     case 0x04: // beq
-        printf("beq\n");
         if(s[rs]==s[rt]) PC = PC + 4*im;
         break;
     case 0x05: // bne
-        printf("bne\n");
         if(s[rs]!=s[rt]) PC = PC + 4*im;
         break;
     case 0x07: // bgtz
-        printf("bgtz\n");
         if(s[rs]>0) PC = PC + 4*im;
         break;
     default:
-        printf("No this insturction\n");
         halt = 1;
         break;
     }
-    s[0] = 0;
     return;
 }

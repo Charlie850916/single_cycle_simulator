@@ -7,86 +7,60 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
     switch(func)
     {
     case 0x20: // add
-        printf("add\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = s[rs] + s[rt];
-        printf("s%d 0x%08x\n", rd, s[rd]);
-        if(rd==0) printf("$0 overwrite!\n");
         OverFlow_add(s[rs], s[rt], s[rd], rd);
         break;
     case 0x21: // addu
-        printf("addu\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = s[rs] + s[rt];
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x22: // sub
-        printf("sub\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = s[rs] - s[rt];
-        printf("s%d 0x%08x\n", rd, s[rd]);
-        if(rd==0) printf("$0 overwrite!\n");
         OverFlow_sub(s[rs], s[rt], s[rd], rd);
         break;
     case 0x24: // and
-        printf("and\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = (s[rs] & s[rt]);
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x25: // or
-        printf("or\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = (s[rs] | s[rt]);
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x26: // xor
-        printf("xor\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = (s[rs] ^ s[rt]);
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x27: // nor
-        printf("nor\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = ~(s[rs] | s[rt]);
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x28: // nand
-        printf("nand\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = ~(s[rs] & s[rt]);
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x2a: // slt
-        printf("slt\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = (s[rs] < s[rt]);
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x00: // sll
-        printf("sll\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = s[rt] << C;
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x02: // srl
-        printf("srl\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = ( (s[rt] >> C) & 0x7fffffff );
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x03: // sra
-        printf("sra\n");
+        if(s0_Overwrite(rd)) break;
         s[rd] = s[rt] >> C;
-        if(rd==0) printf("$0 overwrite!\n");
-        printf("s%d 0x%08x\n", rd, s[rd]);
         break;
     case 0x08: // jr
-        printf("jr\n");
         PC = s[rs];
         break;
     case 0x18: // mult
-        if(overwriteH||overwriteL) printf("HI-LO overwrite\n");
-        printf("mult\n");
+        if(overwriteHL) fprintf(fp_err ,"In cycle %d: Overwrite HI-LO registers\n", cycle);
         long long a, b, c, c1 ,c2;
         a = s[rs];
         b = s[rt];
@@ -95,15 +69,11 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         c2 = c & 0x00000000ffffffff ;
         HI = c1;
         LO = c2 ;
-        printf("HI 0x%08x\n", HI);
-        printf("LO 0x%08x\n", LO);
         OverFlow_mult(s[rs],s[rt],c);
-        overwriteH = 1;
-        overwriteL = 1;
+        overwriteHL = 1;
         break;
     case 0x19: // multu
-        if(overwriteH||overwriteL) printf("HI-LO overwrite\n");
-        printf("multu\n");
+        if(overwriteHL) fprintf(fp_err ,"In cycle %d: Overwrite HI-LO registers\n", cycle);
         long long a_u, b_u, c_u, c1_u, c2_u;
         a_u = ( s[rs] & 0x00000000ffffffff);
         b_u = ( s[rt] & 0x00000000ffffffff);
@@ -112,24 +82,18 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         c2_u = c_u & 0x00000000ffffffff ;
         HI = c1_u;
         LO = c2_u ;
-        printf("HI 0x%08x\n", HI);
-        printf("LO 0x%08x\n", LO);
-        overwriteH = 1;
-        overwriteL = 1;
+        overwriteHL = 1;
         break;
     case 0x10: // mfhi
+        if(s0_Overwrite(rd)) break;
         s[rd] = HI;
-        printf("s%d 0x%08x\n", rd, s[rd]);
-        if(rd==0) printf("$0 overwrite!\n");
-        overwriteH = 0;
+        overwriteHL = 0;
         break;
     case  0x12: // mflo
+        if(s0_Overwrite(rd)) break;
         s[rd] = LO;
-        printf("s%d 0x%08x\n", rd, s[rd]);
-        if(rd==0) printf("$0 overwrite!\n");
-        overwriteL = 0;
+        overwriteHL = 0;
         break;
     }
-    s[0] = 0;
     return;
 }

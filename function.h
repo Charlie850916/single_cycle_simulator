@@ -3,13 +3,21 @@
 
 int s[32], d_mem[2048];
 
+int s_p[32];
+
 unsigned int PC, LO, HI, i_num, d_num, initial_d;
 
-FILE *fp_i, *fp_d;
+unsigned int LO_p, HI_p;
 
-int overwriteH, overwriteL, halt, max_sp, min_sp;
+FILE *fp_i, *fp_d, *fp_r, *fp_err;
+
+int cycle, overwriteHL, halt, max_sp, min_sp;
 
 void Initial();
+
+void InitialImf();
+
+void PrintImf();
 
 void Ending();
 
@@ -37,7 +45,7 @@ void R_type_func(unsigned int s,unsigned int t,unsigned int d,unsigned int C,uns
 
 void I_type_func(unsigned int op, unsigned int s, unsigned int t,short int im);
 
-void WriteZero();
+int s0_Overwrite(int d);
 
 void OverFlow_add(int s, int t, int d, int p);
 
@@ -47,4 +55,4 @@ void OverFlow_mult(int a, int b, long long int c);
 
 int Misalignment(int i);
 
-int AddressOverflow(int i, int b);
+int AddressOverflow(int sp, int b);
