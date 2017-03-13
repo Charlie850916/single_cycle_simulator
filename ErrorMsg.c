@@ -2,15 +2,9 @@
 #include <stdlib.h>
 #include "function.h"
 
-void OverFlow_add(int s, int t, int d, int p)
+void OverFlow_add(int s, int t, int d)
 {
     if( (s>0 && t>0 && d<=0) || (s<0 && t<0 && d>=0) ) fprintf(fp_err, "In cycle %d: Number Overflow\n", cycle);
-    return;
-}
-
-void OverFlow_sub(int s, int t, int d, int p)
-{
-    if( (s>0 && t<0 && d<=0) || (s<0 && t>0 && d>=0) ) fprintf(fp_err, "In cycle %d: Number Overflow\n", cycle);
     return;
 }
 

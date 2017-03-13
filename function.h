@@ -49,9 +49,7 @@ void I_type_func(unsigned int op, unsigned int s, unsigned int t,short int im);
 
 int s0_Overwrite(int d);
 
-void OverFlow_add(int s, int t, int d, int p);
-
-void OverFlow_sub(int s, int t, int d, int p);
+void OverFlow_add(int s, int t, int d);
 
 void OverFlow_mult(int a, int b, long long int c);
 
