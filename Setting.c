@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "function.h"
 
+int s_p[32];
+
+unsigned int LO_p, HI_p;
+
 void Initial()
 {
     int i;

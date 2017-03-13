@@ -4,7 +4,7 @@
 
 void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int C, unsigned int func)
 {
-    long long a, b, c, c1 ,c2 ,a_u, b_u, c_u, c1_u, c2_u;
+    long long a, b;
     switch(func)
     {
     case 0x20: // add
@@ -63,23 +63,17 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
     case 0x18: // mult
         a = s[rs];
         b = s[rt];
-        c = a*b;
-        c1 = c >> 32;
-        c2 = c & 0x00000000ffffffff ;
-        HI = c1;
-        LO = c2 ;
-        OverFlow_mult(s[rs],s[rt],c);
+        HI = a*b >> 32;
+        LO = a*b & 0x00000000ffffffff ;
+        OverFlow_mult(s[rs],s[rt],a*b);
         if(overwriteHL) fprintf(fp_err ,"In cycle %d: Overwrite HI-LO registers\n", cycle);
         overwriteHL = 1;
         break;
     case 0x19: // multu
-        a_u = ( s[rs] & 0x00000000ffffffff);
-        b_u = ( s[rt] & 0x00000000ffffffff);
-        c_u = a_u * b_u;
-        c1_u = c_u >>32;
-        c2_u = c_u & 0x00000000ffffffff ;
-        HI = c1_u;
-        LO = c2_u ;
+        a = ( s[rs] & 0x00000000ffffffff);
+        b = ( s[rt] & 0x00000000ffffffff);
+        HI = a*b >> 32;
+        LO = a*b & 0x00000000ffffffff ;
         if(overwriteHL) fprintf(fp_err ,"In cycle %d: Overwrite HI-LO registers\n", cycle);
         overwriteHL = 1;
         break;

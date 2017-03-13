@@ -3,11 +3,7 @@
 
 int s[32], d_mem[2048];
 
-int s_p[32];
-
 unsigned int PC, LO, HI, i_num, d_num, initial_d;
-
-unsigned int LO_p, HI_p;
 
 int bias;
 
@@ -23,9 +19,9 @@ void PrintImf();
 
 void Ending();
 
-unsigned int Little2Big(unsigned int i); //function done
+unsigned int Little2Big(unsigned int i);
 
-unsigned int GetLineN(int n, FILE *fp); //function done
+unsigned int GetLineN(int n, FILE *fp);
 
 unsigned int GetOpcode(unsigned int i);
 

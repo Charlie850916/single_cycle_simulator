@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1489362017 source:c:\users\user\desktop\single cycle\main.c
+1489384883 source:c:\users\user\desktop\single cycle\main.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
@@ -8,7 +8,7 @@
 	<stdio.h>
 	"function.h"
 
-1489381104 c:\users\user\desktop\single cycle\function.h
+1489385454 c:\users\user\desktop\single cycle\function.h
 	<stdio.h>
 	<stdlib.h>
 
@@ -34,17 +34,17 @@
 	<stdlib.h>
 	"function.h"
 
-1489334419 source:c:\users\user\desktop\single cycle\setting.c
+1489385409 source:c:\users\user\desktop\single cycle\setting.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
 
-1489381104 source:c:\users\user\desktop\single cycle\r_type.c
+1489385767 source:c:\users\user\desktop\single cycle\r_type.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"
 
-1489370980 source:c:\users\user\desktop\single cycle\i_type.c
+1489384207 source:c:\users\user\desktop\single cycle\i_type.c
 	<stdio.h>
 	<stdlib.h>
 	"function.h"

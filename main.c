@@ -4,8 +4,7 @@
 
 int main()
 {
-    unsigned int IS, opcode, rs, rt, rd, C, func, addr;
-    short int im;
+    unsigned int IS, opcode, addr;
     int inital_PC;
 
     Initial();
@@ -23,13 +22,8 @@ int main()
         switch(opcode)
         {
         case 0x00: // R_type
-            rs = Get_rs(IS);
-            rt = Get_rt(IS);
-            rd = Get_rd(IS);
-            C = Get_C(IS);
-            func = Get_func(IS);
             PC = PC + 4;
-            R_type_func(rs,rt,rd,C,func);
+            R_type_func(Get_rs(IS),Get_rt(IS),Get_rd(IS),Get_C(IS),Get_func(IS));
             break;
         case 0x02: // j
             addr = Get_addr(IS);
@@ -44,10 +38,7 @@ int main()
             halt = 1;
             break;
         default: // I_type
-            rs = Get_rs(IS);
-            rt = Get_rt(IS);
-            im = Get_i(IS);
-            I_type_func(opcode,rs,rt,im);
+            I_type_func(opcode,Get_rs(IS),Get_rt(IS),Get_i(IS));
             PC = PC + 4;
             break;
         }
