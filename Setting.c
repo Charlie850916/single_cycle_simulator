@@ -26,7 +26,7 @@ void Initial()
         s_p[i] = 0x00000000;
     }
 
-    for(i=0 ; i<2048 ; i++) d_mem[i] = 0x00000000;
+    for(i=0 ; i<512 ; i++) d_mem[i] = 0x00000000;
 
     PC = GetLineN(0x00, fp_i);
     i_num = GetLineN(0x04, fp_i);
@@ -36,9 +36,9 @@ void Initial()
     s[29] = initial_d;
     s_p[29] = initial_d;
 
-    bias = 1023 - initial_d/4;
+    bias = 255 - initial_d/4;
 
-    for(i=0 ; i<d_num ; i++) d_mem[1023+i] = GetLineN((i*4)+8, fp_d);
+    for(i=0 ; i<d_num ; i++) d_mem[255+i] = GetLineN((i*4)+8, fp_d);
 
     overwriteHL = 0;
     halt = 0;
@@ -63,7 +63,7 @@ void InitialImf()
     fprintf(fp_r,"cycle 0\n");
     for(i=0 ; i<32 ; i++)
     {
-        fprintf(fp_r,"%02d: 0x%08X\n", i, s[i]);
+        fprintf(fp_r,"$%02d: 0x%08X\n", i, s[i]);
     }
     fprintf(fp_r,"$HI: 0x%08X\n", HI);
     fprintf(fp_r,"$LO: 0x%08X\n", LO);
@@ -75,6 +75,7 @@ void InitialImf()
 void PrintImf()
 {
     int i;
+    fprintf(fp_r,"cycle %d\n",cycle);
     for(i=0 ; i<32 ; i++)
     {
         if( s[i]!=s_p[i] )

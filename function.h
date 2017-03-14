@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int s[32], d_mem[2048];
+int s[32], d_mem[512];
 
 unsigned int PC, LO, HI, i_num, d_num, initial_d;
 

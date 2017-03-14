@@ -8,7 +8,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     switch(op)
     {
     case 0x08: // addi
-        if(s0_Overwrite(rt)) break;
+        s0_Overwrite(rt);
         s[rt] = s[rs] + im;
         OverFlow_add(s[rs],im,s[rt]);
         break;
@@ -48,16 +48,16 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         switch(byte)
         {
         case 0:
-            buff = (buff & 0xff000000) >> 24;
+            buff = buff >> 24;
             break;
         case 1:
-            buff = ( (buff & 0x00ff0000) << 8 ) >> 24;
+            buff = (buff & 0x00ff0000) << 8  >> 24;
             break;
         case 2:
-            buff = ( (buff & 0x0000ff00) << 16) >> 24;
+            buff = (buff & 0x0000ff00) << 16 >> 24;
             break;
         case 3:
-            buff = ((buff & 0x000000ff) << 24) >> 24;
+            buff = (buff & 0x000000ff) << 24 >> 24;
             break;
         }
         s[rt] = buff;
@@ -108,7 +108,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         break;
     case 0x28: // sb
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,1)) break;
+        AddressOverflow(s[rs]+im,1);
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         switch(byte)

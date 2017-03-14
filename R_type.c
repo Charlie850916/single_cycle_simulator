@@ -8,7 +8,7 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
     switch(func)
     {
     case 0x20: // add
-        if(s0_Overwrite(rd)) break;
+        s0_Overwrite(rd);
         s[rd] = s[rs] + s[rt];
         OverFlow_add(s[rs], s[rt], s[rd]);
         break;
@@ -17,7 +17,7 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         s[rd] = s[rs] + s[rt];
         break;
     case 0x22: // sub
-        if(s0_Overwrite(rd)) break;
+        s0_Overwrite(rd);
         s[rd] = s[rs] - s[rt];
         OverFlow_add(s[rs], -s[rt], s[rd]);
         break;
