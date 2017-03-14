@@ -19,14 +19,14 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x23: // lw
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(initial_d+s[rs]+im,4);
+        AddressOverflow(s[rs]+im,4);
         if(Misalignment( (s[rs]+im) %4 )) break;
         s[rt] = d_mem[bias+(initial_d+s[rs]+im)/4];
         break;
     case 0x21: // lh
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(initial_d+s[rs]+im,2);
+        AddressOverflow(s[rs]+im,2);
         if(Misalignment( (s[rs]+im) % 2)) break;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         s[rt] = ((initial_d+s[rs]+im)%4==0) ? buff >> 16 : ( (buff&0x0000ffff) << 16) >> 16;
@@ -34,7 +34,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x25: // lhu
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(initial_d+s[rs]+im,2);
+        AddressOverflow(s[rs]+im,2);
         if(Misalignment((s[rs]+im)%2)) break;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         s[rt] = ((initial_d+s[rs]+im)%4==0) ? (buff >> 16) & 0x0000ffff : (buff&0x0000ffff) ;
@@ -42,7 +42,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x20: // lb
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(initial_d+s[rs]+im,1)) break;
+        if(AddressOverflow(s[rs]+im,1)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -65,7 +65,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x24: // lbu
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(initial_d+s[rs]+im,1)) break;
+        if(AddressOverflow(s[rs]+im,1)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         switch(byte)
@@ -87,13 +87,13 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         break;
     case 0x2b: // sw
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(initial_d+s[rs]+im,4);
+        AddressOverflow(s[rs]+im,4);
         if(Misalignment((s[rs]+im)%4)) break;
         d_mem[bias+(initial_d+s[rs]+im)/4] = s[rt];
         break;
     case 0x29: // sh
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(initial_d+s[rs]+im,2);
+        AddressOverflow(s[rs]+im,2);
         if(Misalignment((s[rs]+im)%2)) break;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         if((initial_d+s[rs]+im)%4==0)
@@ -108,7 +108,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         break;
     case 0x28: // sb
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(initial_d+s[rs]+im,1)) break;
+        if(AddressOverflow(s[rs]+im,1)) break;
         byte = (initial_d+s[rs]+im)%4;
         buff = d_mem[bias+(initial_d+s[rs]+im)/4];
         switch(byte)

@@ -38,8 +38,9 @@ int Misalignment(int i)
 
 int AddressOverflow(int sp, int b)
 {
-    if((sp+b-initial_d>=1024*4) || (initial_d-sp>=1024*4))
+    if((sp+b>=1024*4) || (sp<=-1024*4))
     {
+        halt = 1;
         fprintf(fp_err, "In cycle %d: Address Overflow\n", cycle);
         return 1;
     }
