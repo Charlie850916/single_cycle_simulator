@@ -9,7 +9,7 @@ int bias;
 
 FILE *fp_i, *fp_d, *fp_r, *fp_err;
 
-int cycle, overwriteHL, halt, max_sp, min_sp;
+int cycle, overwriteHL, halt;
 
 void Initial();
 

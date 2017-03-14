@@ -41,8 +41,6 @@ void Initial()
     for(i=0 ; i<d_num ; i++) d_mem[1023+i] = GetLineN((i*4)+8, fp_d);
 
     overwriteHL = 0;
-    max_sp = initial_d;
-    min_sp = initial_d;
     halt = 0;
 
     InitialImf();
