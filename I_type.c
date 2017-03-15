@@ -19,114 +19,76 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x23: // lw
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(s[rs]+im,4);
+        if(AddressOverflow(s[rs]+im,4))
+        {
+            Misalignment( (s[rs]+im) %4 );
+            break;
+        }
         if(Misalignment( (s[rs]+im) %4 )) break;
-        s[rt] = d_mem[bias+(initial_d+s[rs]+im)/4];
+        s[rt] = (d_mem[bias+initial_d+s[rs]+im]<<24) | (d_mem[bias+initial_d+s[rs]+im+1] << 16) | (d_mem[bias+initial_d+s[rs]+im+2] << 8) | (d_mem[bias+initial_d+s[rs]+im+3]);
         break;
     case 0x21: // lh
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(s[rs]+im,2);
+        if(AddressOverflow(s[rs]+im,2))
+        {
+            Misalignment((s[rs]+im)%2);
+            break;
+        }
         if(Misalignment( (s[rs]+im) % 2)) break;
-        buff = d_mem[bias+(initial_d+s[rs]+im)/4];
-        s[rt] = ((initial_d+s[rs]+im)%4==0) ? buff >> 16 : ( (buff&0x0000ffff) << 16) >> 16;
+        s[rt] = (d_mem[bias+initial_d+s[rs]+im]<<24>>16) | (d_mem[bias+initial_d+s[rs]+im+1]);
         break;
     case 0x25: // lhu
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(s[rs]+im,2);
+        if(AddressOverflow(s[rs]+im,2))
+        {
+            Misalignment((s[rs]+im)%2);
+            break;
+        }
         if(Misalignment((s[rs]+im)%2)) break;
-        buff = d_mem[bias+(initial_d+s[rs]+im)/4];
-        s[rt] = ((initial_d+s[rs]+im)%4==0) ? (buff >> 16) & 0x0000ffff : (buff&0x0000ffff) ;
+        s[rt] =  (d_mem[bias+initial_d+s[rs]+im]<<8) | (d_mem[bias+initial_d+s[rs]+im+1]);
         break;
     case 0x20: // lb
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
         if(AddressOverflow(s[rs]+im,1)) break;
-        byte = (initial_d+s[rs]+im)%4;
-        buff = d_mem[bias+(initial_d+s[rs]+im)/4];
-        switch(byte)
-        {
-        case 0:
-            buff = buff >> 24;
-            break;
-        case 1:
-            buff = (buff & 0x00ff0000) << 8  >> 24;
-            break;
-        case 2:
-            buff = (buff & 0x0000ff00) << 16 >> 24;
-            break;
-        case 3:
-            buff = (buff & 0x000000ff) << 24 >> 24;
-            break;
-        }
-        s[rt] = buff;
+        s[rt] = d_mem[bias+initial_d+s[rs]+im] << 24 >> 24;
         break;
     case 0x24: // lbu
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
         if(AddressOverflow(s[rs]+im,1)) break;
-        byte = (initial_d+s[rs]+im)%4;
-        buff = d_mem[bias+(initial_d+s[rs]+im)/4];
-        switch(byte)
-        {
-        case 0:
-            buff = (buff >> 24) & 0x000000ff;
-            break;
-        case 1:
-            buff = (buff & 0x00ff0000) >> 16;
-            break;
-        case 2:
-            buff = (buff & 0x0000ff00) >> 8;
-            break;
-        case 3:
-            buff = buff & 0x000000ff;
-            break;
-        }
-        s[rt] = buff;
+        s[rt] = d_mem[bias+initial_d+s[rs]+im] ;
         break;
     case 0x2b: // sw
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(s[rs]+im,4);
+        if(AddressOverflow(s[rs]+im,4))
+        {
+            Misalignment((s[rs]+im)%4);
+            break;
+        }
         if(Misalignment((s[rs]+im)%4)) break;
-        d_mem[bias+(initial_d+s[rs]+im)/4] = s[rt];
+        d_mem[bias+initial_d+s[rs]+im] = (s[rt] >> 24) & 0x000000ff ;
+        d_mem[bias+initial_d+s[rs]+im+1] = (s[rt] >> 16) & 0x000000ff ;
+        d_mem[bias+initial_d+s[rs]+im+2] = (s[rt] >> 8) & 0x000000ff ;
+        d_mem[bias+initial_d+s[rs]+im+3] = s[rt] & 0x000000ff ;
         break;
     case 0x29: // sh
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(s[rs]+im,2);
+        if(AddressOverflow(s[rs]+im,2))
+        {
+            Misalignment((s[rs]+im)%2);
+            break;
+        }
         if(Misalignment((s[rs]+im)%2)) break;
-        buff = d_mem[bias+(initial_d+s[rs]+im)/4];
-        if((initial_d+s[rs]+im)%4==0)
-        {
-            buff = (buff & 0x0000ffff) | ((s[rt]&0x0000ffff)<<16);
-        }
-        else
-        {
-            buff = (buff & 0xffff0000) | ((s[rt]&0x0000ffff));
-        }
-        d_mem[bias+(initial_d+s[rs]+im)/4] = buff;
+        d_mem[bias+initial_d+s[rs]+im] = (s[rt] >> 8) & 0x000000ff ;
+        d_mem[bias+initial_d+s[rs]+im+1] = s[rt] & 0x000000ff ;
         break;
     case 0x28: // sb
         OverFlow_add(s[rs],im,s[rs]+im);
-        AddressOverflow(s[rs]+im,1);
-        byte = (initial_d+s[rs]+im)%4;
-        buff = d_mem[bias+(initial_d+s[rs]+im)/4];
-        switch(byte)
-        {
-        case 0:
-            buff = (buff & 0x00fffff) | ((s[rt]&0x000000ff)<<24);
-            break;
-        case 1:
-            buff = (buff & 0xff00ffff) | ((s[rt]&0x000000ff)<<16);
-            break;
-        case 2:
-            buff = (buff & 0xffff00ff) | ((s[rt]&0x000000ff)<<8);
-            break;
-        case 3:
-            buff = (buff & 0xff00ffff) | (s[rt]&0x000000ff);
-            break;
-        }
-        d_mem[bias+(initial_d+s[rs]+im)/4] = buff;
+        if(AddressOverflow(s[rs]+im,1)) break;
+        d_mem[bias+initial_d+s[rs]+im] = s[rt] & 0x000000ff ;
         break;
     case 0x0f: // lui
         if(s0_Overwrite(rt)) break;

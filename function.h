@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int s[32], d_mem[512];
+int s[32];
 
-unsigned int PC, LO, HI, i_num, d_num, initial_d;
+int d_mem [2048];
 
-int bias;
+unsigned int PC, LO, HI, i_num, d_num;
+
+int initial_d, bias;
 
 FILE *fp_i, *fp_d, *fp_r, *fp_err;
 
