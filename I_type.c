@@ -9,8 +9,8 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     {
     case 0x08: // addi
         s0_Overwrite(rt);
+        OverFlow_add(s[rs],im,s[rt]+im);
         s[rt] = s[rs] + im;
-        OverFlow_add(s[rs],im,s[rt]);
         break;
     case 0x09: // addiu
         if(s0_Overwrite(rt)) break;

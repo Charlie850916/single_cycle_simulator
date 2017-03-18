@@ -9,8 +9,8 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
     {
     case 0x20: // add
         s0_Overwrite(rd);
+        OverFlow_add(s[rs], s[rt], s[rs] + s[rt]);
         s[rd] = s[rs] + s[rt];
-        OverFlow_add(s[rs], s[rt], s[rd]);
         break;
     case 0x21: // addu
         if(s0_Overwrite(rd)) break;
@@ -18,8 +18,8 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         break;
     case 0x22: // sub
         s0_Overwrite(rd);
+        OverFlow_add(s[rs], -s[rt], s[rs] - s[rt]);
         s[rd] = s[rs] - s[rt];
-        OverFlow_add(s[rs], -s[rt], s[rd]);
         break;
     case 0x24: // and
         if(s0_Overwrite(rd)) break;
