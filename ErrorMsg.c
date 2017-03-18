@@ -38,7 +38,7 @@ int Misalignment(int i)
 
 int AddressOverflow(int sp, int b)
 {
-    if(sp+b>=1024|| sp <= -1024)
+    if(sp+b>1024|| sp < -1024)
     {
 
         halt = 1;
