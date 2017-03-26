@@ -26,7 +26,7 @@ void Initial()
         s_p[i] = 0x00000000;
     }
 
-    for(i=0 ; i<2048 ; i++) d_mem[i] = 0;
+    for(i=0 ; i<1024 ; i++) d_mem[i] = 0;
 
     PC = GetLineN(0x00, fp_i);
     i_num = GetLineN(0x04, fp_i);
@@ -36,15 +36,13 @@ void Initial()
     s[29] = initial_d;
     s_p[29] = initial_d;
 
-    bias = 1023 - initial_d;
-
     for(i=0 ; i<d_num ; i++)
     {
         buff = ( GetLineN(i*4+8, fp_d) ) ;
-        d_mem[1023+i*4] = (buff >> 24) & 0x000000ff;
-        d_mem[1023+i*4+1] = (buff >> 16) & 0x000000ff;
-        d_mem[1023+i*4+2] = (buff >> 8) & 0x000000ff;
-        d_mem[1023+i*4+3] = buff & 0x000000ff;
+        d_mem[i*4] = (buff >> 24) & 0x000000ff;
+        d_mem[i*4+1] = (buff >> 16) & 0x000000ff;
+        d_mem[i*4+2] = (buff >> 8) & 0x000000ff;
+        d_mem[i*4+3] = buff & 0x000000ff;
     }
 
     overwriteHL = 0;

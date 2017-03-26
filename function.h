@@ -3,11 +3,11 @@
 
 int s[32];
 
-int d_mem [2048];
+int d_mem [1024];
 
 unsigned int PC, LO, HI, i_num, d_num;
 
-int initial_d, bias;
+int initial_d;
 
 FILE *fp_i, *fp_d, *fp_r, *fp_err;
 
@@ -48,8 +48,6 @@ void I_type_func(unsigned int op, unsigned int s, unsigned int t,short int im);
 int s0_Overwrite(int d);
 
 void OverFlow_add(int s, int t, int d);
-
-void OverFlow_mult(int a, int b, long long int c);
 
 int Misalignment(int i);
 

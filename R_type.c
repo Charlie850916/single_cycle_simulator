@@ -55,7 +55,16 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         break;
     case 0x02: // srl
         if(s0_Overwrite(rd)) break;
-        s[rd] = ( (s[rt] >> C) & 0x7fffffff );
+        if(s[rt]>=0)
+        {
+            s[rd] = s[rt] >> C;
+        }
+        else
+        {
+            int i = 0x7fffffff;
+            i = i >> (C-1);
+            s[rd] = (s[rt] >> C) & i;
+        }
         break;
     case 0x03: // sra
         if(s0_Overwrite(rd)) break;
@@ -69,7 +78,6 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         b = s[rt];
         HI = a*b >> 32;
         LO = a*b & 0x00000000ffffffff ;
-        OverFlow_mult(s[rs],s[rt],a*b);
         if(overwriteHL) fprintf(fp_err ,"In cycle %d: Overwrite HI-LO registers\n", cycle);
         overwriteHL = 1;
         break;
