@@ -46,11 +46,11 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         s[rd] = (s[rs] < s[rt]);
         break;
     case 0x00: // sll nop
-        if(rs!=0||rt!=0||rd!=0||C!=0)
+        if(rt!=0||rd!=0||C!=0)
         {
-             s0_Overwrite(rd);
-             s[rd] = s[rt] << C;
-             break;
+            s0_Overwrite(rd);
+            s[rd] = s[rt] << C;
+            break;
         }
         break;
     case 0x02: // srl

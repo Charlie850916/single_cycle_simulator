@@ -5,17 +5,18 @@
 int main()
 {
     unsigned int IS, opcode, addr;
-    int inital_PC;
+    int initial_PC;
 
     Initial();
 
-    inital_PC = PC;
+    initial_PC = PC;
 
     cycle = 1;
 
     while(!halt)
     {
-        IS = GetLineN(PC-inital_PC+8,fp_i);
+        if(PC>=initial_PC) IS = GetLineN(PC-initial_PC+8,fp_i);
+        else IS = 0x00000000;
         opcode = GetOpcode(IS);
         switch(opcode)
         {
