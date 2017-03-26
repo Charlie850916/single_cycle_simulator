@@ -15,8 +15,10 @@ int main()
 
     while(!halt)
     {
+        if(cycle==350) printf("cycle = %d\n",cycle);
         if(PC>=initial_PC) IS = GetLineN(PC-initial_PC+8,fp_i);
         else IS = 0x00000000;
+        if(cycle==350) printf("IS = 0x%08x\n",IS);
         opcode = GetOpcode(IS);
         switch(opcode)
         {
