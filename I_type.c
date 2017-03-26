@@ -19,7 +19,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x23: // lw
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,4))
+        if(AddressOverflow(s[rs]+i,4))
         {
             Misalignment( (s[rs]+im) %4 );
             break;
@@ -30,7 +30,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x21: // lh
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,2))
+        if(AddressOverflow(s[rs]+i,2))
         {
             Misalignment((s[rs]+im)%2);
             break;
@@ -41,7 +41,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x25: // lhu
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,2))
+        if(AddressOverflow(s[rs]+i,2))
         {
             Misalignment((s[rs]+im)%2);
             break;
@@ -52,18 +52,18 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
     case 0x20: // lb
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,1)) break;
+        if(AddressOverflow(s[rs]+i,1)) break;
         s[rt] = d_mem[s[rs]+im] << 24 >> 24;
         break;
     case 0x24: // lbu
         s0_Overwrite(rt);
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,1)) break;
+        if(AddressOverflow(s[rs]+i,1)) break;
         s[rt] = d_mem[s[rs]+im] ;
         break;
     case 0x2b: // sw
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,4))
+        if(AddressOverflow(s[rs]+i,4))
         {
             Misalignment((s[rs]+im)%4);
             break;
@@ -76,7 +76,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         break;
     case 0x29: // sh
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,2))
+        if(AddressOverflow(s[rs]+i,2))
         {
             Misalignment((s[rs]+im)%2);
             break;
@@ -87,7 +87,7 @@ void I_type_func(unsigned int op, unsigned int rs, unsigned int rt,short int im)
         break;
     case 0x28: // sb
         OverFlow_add(s[rs],im,s[rs]+im);
-        if(AddressOverflow(s[rs]+im,1)) break;
+        if(AddressOverflow(s[rs]+i,1)) break;
         d_mem[s[rs]+im] = s[rt] & 0x000000ff ;
         break;
     case 0x0f: // lui
