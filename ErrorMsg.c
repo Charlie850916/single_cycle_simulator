@@ -31,7 +31,7 @@ int Misalignment(int i)
 
 int AddressOverflow(int sp, int b)
 {
-    if( sp+b >1024 || sp < 0)
+    if( sp >1025-b || sp < 0)
     {
         halt = 1;
         fprintf(fp_err, "In cycle %d: Address Overflow\n", cycle);

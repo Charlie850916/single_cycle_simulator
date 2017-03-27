@@ -55,8 +55,6 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
         break;
     case 0x02: // srl
         if(s0_Overwrite(rd)) break;
-        if(cycle==350)printf("rt = 0x%08x\n",s[rt]);
-        if(cycle==350) printf("C = %d\n",C);
         if(C==0)
         {
             s[rd] = s[rt];
@@ -71,7 +69,6 @@ void R_type_func(unsigned int rs, unsigned int rt, unsigned int rd, unsigned int
             i = i >> (C-1);
             s[rd] = (s[rt] >> C) & i;
         }
-        if(cycle==350) printf("rd = 0x%08x\n",s[rd]);
         break;
     case 0x03: // sra
         if(s0_Overwrite(rd)) break;

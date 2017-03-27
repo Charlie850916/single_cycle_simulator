@@ -5,6 +5,8 @@ int s[32];
 
 int d_mem [1024];
 
+unsigned int i_mem[256];
+
 unsigned int PC, LO, HI, i_num, d_num;
 
 int initial_d;

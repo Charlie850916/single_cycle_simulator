@@ -26,6 +26,7 @@ void Initial()
         s_p[i] = 0x00000000;
     }
 
+    for(i=0 ; i<256 ; i++) i_mem[i] = 0;
     for(i=0 ; i<1024 ; i++) d_mem[i] = 0;
 
     PC = GetLineN(0x00, fp_i);
@@ -35,6 +36,11 @@ void Initial()
 
     s[29] = initial_d;
     s_p[29] = initial_d;
+
+    for(i=0 ; i<i_num ; i++)
+    {
+        i_mem[PC/4+i] = GetLineN(i*4+8,fp_i);
+    }
 
     for(i=0 ; i<d_num ; i++)
     {
@@ -48,6 +54,9 @@ void Initial()
     overwriteHL = 0;
     halt = 0;
 
+    fclose(fp_i);
+    fclose(fp_d);
+
     InitialImf();
 
     return;
@@ -55,8 +64,6 @@ void Initial()
 
 void Ending()
 {
-    fclose(fp_i);
-    fclose(fp_d);
     fclose(fp_r);
     fclose(fp_err);
     return;

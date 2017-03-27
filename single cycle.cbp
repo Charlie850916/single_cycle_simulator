@@ -31,10 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="ErrorMsg.c">
+		<Unit filename="Decode.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="GetInstruction.c">
+		<Unit filename="ErrorMsg.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="I_type.c">
